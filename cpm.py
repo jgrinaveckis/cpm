@@ -80,13 +80,23 @@ class CPM(nx.DiGraph):
 
 def union(listas: list):
     tup1=()
+    conNodes = []
+    index = 1
     for n in listas:
         tup1+=((namestr(n, globals()) + '-'),)
-    print(tup1)
     G = nx.union_all(listas, rename=(tup1))
     G2 = CPM()
+    nodes = list(G.nodes)
     G2.add_nodes_from(G.nodes(data=True))
-    G2.add_edges_from(G.edges())
+    G2.add_edges_from(G.edges(data=True))
+    for i in range(len(nodes)):
+        try:
+            if tup1[index] in nodes[i]:
+                conNodes.append((nodes[i-1],nodes[i]))
+                index += 1
+        except IndexError:
+                break
+    G2.add_edges_from(conNodes)
     return G2
 
 def namestr(obj, namespace):
@@ -96,6 +106,7 @@ def namestr(obj, namespace):
 if __name__ == "__main__":
     G = CPM()
     G1 = CPM()
+    G2 = CPM()
     G.add_node('A', duration=5)
     G.add_node('B', duration=2)
     G.add_node('C', duration=4)
@@ -115,6 +126,16 @@ if __name__ == "__main__":
     G1.add_node('G', duration=3)
     G1.add_node('H', duration=2)
     G1.add_node('I', duration=4)
+
+    G2.add_node('A', duration=5)
+    G2.add_node('B', duration=2)
+    G2.add_node('C', duration=4)
+    G2.add_node('D', duration=4)
+    G2.add_node('E', duration=3)
+    G2.add_node('F', duration=7)
+    G2.add_node('G', duration=3)
+    G2.add_node('H', duration=2)
+    G2.add_node('I', duration=4)
 
 
     G.add_edges_from([
@@ -136,15 +157,20 @@ if __name__ == "__main__":
         ('F', 'H'),
         ('C', 'I'), ('G', 'I'), ('H', 'I')
     ])
-    
-    G3 = nx.union_all([G,G1], rename=('1-', '2-'))
-    G2 = CPM()
-    G2.add_nodes_from(G3.nodes(data=True))
-    G2.add_edges_from(G3.edges())
-    G2.add_edge('1-I', '2-B')
 
-    G4 = union([G, G1])
+    G2.add_edges_from([
+        ('A', 'C'),
+        ('A', 'D'),
+        ('B', 'E'),
+        ('B', 'F'),
+        ('D', 'G'), ('E', 'G'),
+        ('F', 'H'),
+        ('C', 'I'), ('G', 'I'), ('H', 'I')
+    ])
+    
+    G4 = union([G, G1, G2])
     
     #print(G2.critical_path_length,G2.critical_path)
-    print(G4.nodes())
-    #print(str(G2))
+    #print(type(G4.nodes.items()))
+    print(G4.critical_path,G4.critical_path_length)
+
