@@ -49,7 +49,11 @@ class CPM(nx.DiGraph):
     def _backward(self):
         for n in reversed(list(nx.topological_sort(self))):
             lf = min([self.node[j]['LS'] for j in self.successors(n)], default=self._critical_path_length)
-            self.add_node(n, LS=lf - self.node[n]['duration'], LF=lf)
+
+            #kritinius tasku laikus paskaiciuojame nuo galo
+            kl = max([self.node[j]['KL'] for j in self.successors(n)], default=0) + self.node[n]['duration']
+            self.add_node(n, LS=lf - self.node[n]['duration'], LF=lf, KL=kl)
+
 
     def _compute_critical_path(self):
         graph = set()
@@ -168,9 +172,14 @@ if __name__ == "__main__":
         ('C', 'I'), ('G', 'I'), ('H', 'I')
     ])
     
-    G4 = union([G, G1, G2])
+    G4 = union([G, G1])
     
     #print(G2.critical_path_length,G2.critical_path)
-    #print(type(G4.nodes.items()))
-    print(G4.critical_path,G4.critical_path_length)
+    G4.critical_path
+    G4.critical_path_length
+    kl_list = sorted(G4.nodes.data('KL'), key=lambda x:x[1], reverse=True)
+    kl_list_test = [x[0] for x in kl_list]
+
+    #TODO:prie node vardu prideti duration ir gauti list of tuples
+    print(kl_list_test)
 
