@@ -109,7 +109,6 @@ def namestr(obj, namespace):
 #gauname isrikiuotas uzduotis pagal kritini laika (descending)
 def sortingnodes(nodeslist):
     kl_list = sorted(nodeslist, key=lambda x:x[1], reverse=True)
-    print(kl_list)
     kl_list_test = [x[0] for x in kl_list]
     return kl_list_test
 
@@ -171,5 +170,5 @@ if __name__ == "__main__":
     G4.critical_path_length
     kl_list = sortingnodes(G4.nodes.data('KL'))
     testlist = addingdurations(kl_list,list(G4.nodes.data('duration')))
-    print(testlist)
+    print(G4.edges.data())
 
