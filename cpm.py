@@ -106,6 +106,19 @@ def union(listas: list):
 def namestr(obj, namespace):
     return [name for name in namespace if namespace[name] is obj][0]
 
+#gauname isrikiuotas uzduotis pagal kritini laika (descending)
+def sortingnodes(nodeslist):
+    kl_list = sorted(nodeslist, key=lambda x:x[1], reverse=True)
+    print(kl_list)
+    kl_list_test = [x[0] for x in kl_list]
+    return kl_list_test
+
+#pridedamos uzduociu trukmes prie isrikiuoto saraso
+def addingdurations(sortedNodesList, originalNodesList):
+    testList = [sorted(originalNodesList, key=lambda x: sortedNodesList.index(x[0]))]
+    return testList
+
+
 
 if __name__ == "__main__":
     G = CPM()
@@ -131,16 +144,8 @@ if __name__ == "__main__":
     G1.add_node('H', duration=2)
     G1.add_node('I', duration=4)
 
-    G2.add_node('A', duration=5)
-    G2.add_node('B', duration=2)
-    G2.add_node('C', duration=4)
-    G2.add_node('D', duration=4)
-    G2.add_node('E', duration=3)
-    G2.add_node('F', duration=7)
-    G2.add_node('G', duration=3)
-    G2.add_node('H', duration=2)
-    G2.add_node('I', duration=4)
-
+    #grafas su tik vienu tasku be jokiu jungimu
+    G2.add_node('A', duration=6)
 
     G.add_edges_from([
         ('A', 'C'),
@@ -161,25 +166,11 @@ if __name__ == "__main__":
         ('F', 'H'),
         ('C', 'I'), ('G', 'I'), ('H', 'I')
     ])
-
-    G2.add_edges_from([
-        ('A', 'C'),
-        ('A', 'D'),
-        ('B', 'E'),
-        ('B', 'F'),
-        ('D', 'G'), ('E', 'G'),
-        ('F', 'H'),
-        ('C', 'I'), ('G', 'I'), ('H', 'I')
-    ])
     
-    G4 = union([G, G1])
-    
-    #print(G2.critical_path_length,G2.critical_path)
+    G4 = union([G, G1, G2])
     G4.critical_path
     G4.critical_path_length
-    kl_list = sorted(G4.nodes.data('KL'), key=lambda x:x[1], reverse=True)
-    kl_list_test = [x[0] for x in kl_list]
-
-    #TODO:prie node vardu prideti duration ir gauti list of tuples
-    print(kl_list_test)
+    kl_list = sortingnodes(G4.nodes.data('KL'))
+    testlist = addingdurations(kl_list,list(G4.nodes.data('duration')))
+    print(testlist)
 
