@@ -146,8 +146,6 @@ if __name__ == "__main__":
 
     #grafas su tik vienu tasku be jokiu jungimu
     G2.add_node('A', duration=6)
-
-    #
     G.add_edges_from([
         ('A', 'C'),
         ('A', 'D'),
