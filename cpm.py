@@ -1,5 +1,6 @@
 import networkx as nx
-
+from datetime import date
+import datetime
 
 class CPM(nx.DiGraph):
 
@@ -114,8 +115,24 @@ def sortingnodes(nodeslist):
 
 #pridedamos uzduociu trukmes prie isrikiuoto saraso
 def addingdurations(sortedNodesList, originalNodesList):
-    testList = [sorted(originalNodesList, key=lambda x: sortedNodesList.index(x[0]))]
+    testList = sorted(originalNodesList, key=lambda x: sortedNodesList.index(x[0]))
     return testList
+
+def adding_tasks_dates(nodeslist, date):
+    nodes = [i[0] for i in nodeslist]
+    nodes_durations = []
+    cur_date = date
+    for node in nodeslist[::-1]:
+        nodes_durations.append((cur_date.strftime('%m/%d/%Y, %H:%M'),(cur_date - datetime.timedelta(hours=node[1])).strftime('%m/%d/%Y, %H:%M')))
+        cur_date = cur_date - datetime.timedelta(hours=node[1])
+
+#dict kur key - taskas, value - pradzia ir pabaiga
+    info_dict = dict(zip(nodes,nodes_durations[::-1]))
+    print(info_dict)
+   # print(nodes_durations[::-1])
+
+
+    
 
 
 
@@ -170,5 +187,6 @@ if __name__ == "__main__":
     G4.critical_path_length
     kl_list = sortingnodes(G4.nodes.data('KL'))
     testlist = addingdurations(kl_list,list(G4.nodes.data('duration')))
-    print(G4.edges.data())
+    adding_tasks_dates(testlist, datetime.datetime(2019,8,26,23,00))
+    #print(G4.nodes.data())
 
