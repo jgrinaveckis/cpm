@@ -1,7 +1,7 @@
 import networkx as nx
 import plotly.figure_factory as ff
 import datetime
-
+import tasks_durations as td
 
 class CPM(nx.DiGraph):
 
@@ -124,11 +124,11 @@ def adding_tasks_dates(nodeslist: list, date: datetime.datetime):
     nodes_durations = []
     cur_date = date
     for node in nodeslist[::-1]:
-        nodes_durations.append(((cur_date - datetime.timedelta(hours=node[1])).strftime('%Y-%m-%d %H:%M'),cur_date.strftime('%Y-%m-%d %H:%M')))
+        nodes_durations.append(((cur_date - datetime.timedelta(hours=node[1])).strftime('%Y-%m-%d %H:%M'),\
+        cur_date.strftime('%Y-%m-%d %H:%M')))
         cur_date = cur_date - datetime.timedelta(hours=node[1])
     #dict kur key - taskas, value - pradzia ir pabaiga
     info_dict = dict(zip(nodes,nodes_durations[::-1]))
-    #print(info_dict)
     return info_dict
 
 def build_tasks_dict(tasksdatesdict:dict):
@@ -143,7 +143,6 @@ def build_tasks_dict(tasksdatesdict:dict):
         for k, v in tasksdatesdict.items():
             if name in k.split('-')[1]:
                 new_dict[name][k] = v
-    #print(new_dict)
     return new_dict
     
 def plotting_gantt(tasksdict:dict):
@@ -151,13 +150,11 @@ def plotting_gantt(tasksdict:dict):
     for out_k, out_v in tasksdict.items():
         for in_k, in_v in out_v.items():
             df.append(dict(Task=out_k,Start=in_v[0], Finish=in_v[1],Resource=in_k))
-    fig = ff.create_gantt(df, index_col='Task', show_colorbar=True, group_tasks=True, showgrid_x=True, showgrid_y=True, data='Resource', bar_width=0.5) 
+    fig = ff.create_gantt(df, index_col='Task', show_colorbar=True,\
+    group_tasks=True, showgrid_x=True, showgrid_y=True, data='Resource', bar_width=0.5,\
+    height=1000, width=1800, show_hover_fill=True) 
     fig.show()
-
-
     
-
-
 
 if __name__ == "__main__":
     G = CPM()
@@ -210,8 +207,9 @@ if __name__ == "__main__":
     G4.critical_path_length
     kl_list = sortingnodes(G4.nodes.data('KL'))
     testlist = addingdurations(kl_list,list(G4.nodes.data('duration')))
-    nodesdict = adding_tasks_dates(testlist, datetime.datetime(2019,8,26,23,00))
+    nodesdict = td.adding_tasks_dates(testlist, datetime.datetime(2019,8,26,17,00))
     tasks_durations = build_tasks_dict(nodesdict)
     plotting_gantt(tasks_durations)
-    #print(G4.nodes.data())
+    #print(testlist)
+    #print(nodesdict)
 
