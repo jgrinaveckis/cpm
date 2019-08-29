@@ -149,10 +149,11 @@ def plotting_gantt(tasksdict:dict):
     df = []
     for out_k, out_v in tasksdict.items():
         for in_k, in_v in out_v.items():
-            df.append(dict(Task=out_k,Start=in_v[0], Finish=in_v[1],Resource=in_k))
+            for i in in_v:
+                df.append(dict(Task=out_k,Start=i[0], Finish=i[1],Resource=in_k))
     fig = ff.create_gantt(df, index_col='Task', show_colorbar=True,\
     group_tasks=True, showgrid_x=True, showgrid_y=True, data='Resource', bar_width=0.5,\
-    height=1000, width=1800, show_hover_fill=True) 
+    height=1000, width=1200, show_hover_fill=True) 
     fig.show()
     
 
@@ -175,7 +176,7 @@ if __name__ == "__main__":
     G1.add_node('C', duration=4)
     G1.add_node('D', duration=4)
     G1.add_node('E', duration=3)
-    G1.add_node('F', duration=7)
+    G1.add_node('F', duration=10)
     G1.add_node('G', duration=3)
     G1.add_node('H', duration=2)
     G1.add_node('I', duration=4)
@@ -210,6 +211,6 @@ if __name__ == "__main__":
     nodesdict = td.adding_tasks_dates(testlist, datetime.datetime(2019,8,26,17,00))
     tasks_durations = build_tasks_dict(nodesdict)
     plotting_gantt(tasks_durations)
-    #print(testlist)
+    print(tasks_durations)
     #print(nodesdict)
 
