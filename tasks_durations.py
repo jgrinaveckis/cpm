@@ -17,12 +17,6 @@ def adding_tasks_dates(nodeslist: list, date):
                 cur_date = cur_date.replace(hour=17)
             while dur > 9:
                 cur_date, times_list, dur = list_appending(times_list, cur_date, dur)
-                # finish = cur_date
-                # start = cur_date.replace(hour=8)
-                # times_list.append((start.strftime('%Y-%m-%d %H:%M'),finish.strftime('%Y-%m-%d %H:%M')))
-                # dur = dur - int(((finish - start).total_seconds())/3600)
-                # cur_date = cur_date-datetime.timedelta(days=1)
-                # cur_date = cur_date.replace(hour=17)
             else:
                 times_list.append(((cur_date - datetime.timedelta(hours=dur)).strftime('%Y-%m-%d %H:%M'),\
                 cur_date.strftime('%Y-%m-%d %H:%M')))
@@ -34,20 +28,8 @@ def adding_tasks_dates(nodeslist: list, date):
                 cur_date = cur_date.replace(hour=17)
             while dur > 9:
                 cur_date, times_list, dur = list_appending(times_list, cur_date, dur)
-                # finish = cur_date
-                # start = cur_date.replace(hour=8)
-                # times_list.append((start.strftime('%Y-%m-%d %H:%M'),finish.strftime('%Y-%m-%d %H:%M')))
-                # dur -= int(((finish - start).total_seconds())/3600)
-                # cur_date = cur_date-datetime.timedelta(days=1)
-                # cur_date = cur_date.replace(hour=17)
             else:
                 cur_date, times_list, dur = list_appending(times_list, cur_date, dur)
-                # finish = cur_date
-                # start = cur_date.replace(hour=8)
-                # times_list.append((start.strftime('%Y-%m-%d %H:%M'),finish.strftime('%Y-%m-%d %H:%M')))
-                # dur = dur - int(((finish - start).total_seconds())/3600)
-                # cur_date = cur_date-datetime.timedelta(days=1)
-                # cur_date = cur_date.replace(hour=17)
                 times_list.append(((cur_date - datetime.timedelta(hours=dur)).strftime('%Y-%m-%d %H:%M'),\
                 cur_date.strftime('%Y-%m-%d %H:%M')))
                 nodes_durations.extend([times_list[::-1]])
