@@ -208,7 +208,7 @@ if __name__ == "__main__":
     G4.critical_path_length
     kl_list = sortingnodes(G4.nodes.data('KL'))
     testlist = addingdurations(kl_list,list(G4.nodes.data('duration')))
-    nodesdict = td.adding_tasks_dates(testlist, datetime.datetime(2019,8,26,17,00))
+    nodesdict = td.adding_tasks_dates(testlist, datetime.datetime(2019,8,26,17,00),6,15)
     tasks_durations = build_tasks_dict(nodesdict)
     plotting_gantt(tasks_durations)
     print(kl_list)
