@@ -131,8 +131,8 @@ def adding_tasks_dates(nodeslist: list, date: datetime.datetime):
     info_dict = dict(zip(nodes,nodes_durations[::-1]))
     return info_dict
 
-def build_tasks_dict(tasksdatesdict:dict):
-    nodes_names = tasksdatesdict.keys()
+def build_tasks_dict(tasks_dates_dict:dict):
+    nodes_names = tasks_dates_dict.keys()
     operations = []
     new_dict = {}
     for x in nodes_names:
@@ -140,7 +140,7 @@ def build_tasks_dict(tasksdatesdict:dict):
     operations = list(set(operations))
     for name in operations:
         new_dict[name] = {}
-        for k, v in tasksdatesdict.items():
+        for k, v in tasks_dates_dict.items():
             if name in k.split('-')[1]:
                 new_dict[name][k] = v
     return new_dict
@@ -163,10 +163,10 @@ if __name__ == "__main__":
     G2 = CPM()
     G.add_node('A', duration=5)
     G.add_node('B', duration=2)
-    G.add_node('C', duration=4)
+    G.add_node('C', duration=1)
     G.add_node('D', duration=4)
-    G.add_node('E', duration=3)
-    G.add_node('F', duration=7)
+    G.add_node('E', duration=15)
+    G.add_node('F', duration=2)
     G.add_node('G', duration=3)
     G.add_node('H', duration=2)
     G.add_node('I', duration=4)
@@ -211,6 +211,7 @@ if __name__ == "__main__":
     nodesdict = td.adding_tasks_dates(testlist, datetime.datetime(2019,8,26,17,00))
     tasks_durations = build_tasks_dict(nodesdict)
     plotting_gantt(tasks_durations)
+    print(kl_list)
     print(tasks_durations)
     #print(nodesdict)
 
